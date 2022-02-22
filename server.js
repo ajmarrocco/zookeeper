@@ -5,9 +5,11 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
 app.use(express.json());
+app.use(express.static('public'));
 const { animals } = require('./data/animals');
 const fs = require('fs');
 const path = require('path');
+
 
 function filterByQuery(query, animalsArray) {
     let personalityTraitsArray = [];
@@ -106,6 +108,10 @@ app.post('/api/animals', (req, res) => {
         const animal = createNewAnimal(req.body, animals);
         res.json(animal);
     }
+});
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
 app.listen(PORT, () => {
